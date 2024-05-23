@@ -17,6 +17,7 @@ pub mod components {
     pub use crate::scale2d::Scale2D;
     pub use crate::scale2d::ScalePropogation;
     pub use crate::spatialbundle2d::SpatialBundle2D;
+    pub use crate::spatialbundle2d::SpatialBundle2DRaw;
 }
 
 pub mod math {
