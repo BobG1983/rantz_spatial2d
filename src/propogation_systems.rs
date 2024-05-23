@@ -2,7 +2,7 @@ use crate::prelude::*;
 use bevy::prelude::*;
 
 #[derive(SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
-pub enum Spatial2dSystems {
+pub enum SpatialSystems2D {
     Propogate,
 }
 

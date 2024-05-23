@@ -30,7 +30,7 @@ pub mod plugins {
 
 pub mod systems {
     pub use crate::propogation_systems::propogate_spatial2d;
-    pub use crate::propogation_systems::Spatial2dSystems;
+    pub use crate::propogation_systems::SpatialSystems2D;
 }
 
 pub mod prelude {

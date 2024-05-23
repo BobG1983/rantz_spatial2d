@@ -18,13 +18,13 @@ impl Plugin for SpatialPlugin2D {
             .add_systems(
                 PostUpdate,
                 (propogate_spatial2d)
-                    .in_set(Spatial2dSystems::Propogate)
+                    .in_set(SpatialSystems2D::Propogate)
                     .before(TransformSystem::TransformPropagate),
             )
             .add_systems(
                 PostStartup,
                 (propogate_spatial2d)
-                    .in_set(Spatial2dSystems::Propogate)
+                    .in_set(SpatialSystems2D::Propogate)
                     .before(TransformSystem::TransformPropagate),
             );
     }
