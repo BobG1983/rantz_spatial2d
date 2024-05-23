@@ -27,25 +27,28 @@ When you add a `SpatialBundle2D` to an entity, it will also automatically add a 
 The `DrawOrder` struct is used to specify the draw layering of entities in your game. It is a wrapper over an f32, with higher values drawing above lower values. 
 
 ## Propogation Types
-The PositionPropogation and RotationPropogation enums are used to control how the spatial components of an entity are propogated to its children.
+The following enums are used to control how the spatial components of an entity are propogated to its children.
 
-### PositionPropogation
-The PositionPropogation enum has two variants:
+### `PositionPropogation`
+The `PositionPropogation` enum has two variants:
 
-**Relative:** *[Default]*The position of a child entity is relative to its parent's position.
+**Relative:** **[Default]**The position of a child entity is relative to its parent's position.
+
 **Absolute:** The position of a child entity is absolute and does not take into account its parent's position.
 
-### RotationPropogation
-The RotationPropogation enum has two variants:
+### `RotationPropogation`
+The `RotationPropogation` enum has two variants:
 
-**Relative:** *[Default]*The rotation of a child entity is relative to its parent's rotation.
+**Relative:** **[Default]**The rotation of a child entity is relative to its parent's rotation.
+
 **Absolute:** The rotation of a child entity is absolute and does not take into account its parent's rotation.
 By default, both PositionPropogation and RotationPropogation are set to Relative.
 
-### ScalePropogation
-The ScalePropogation enum has two variants:
+### `ScalePropogation`
+The `ScalePropogation` enum has two variants:
 
-**Relative:** *[Default]*The rotation of a child entity is relative to its parent's rotation.
+**Relative:** **[Default]**The rotation of a child entity is relative to its parent's rotation.
+
 **Absolute:** The rotation of a child entity is absolute and does not take into account its parent's rotation.
 
 ## Usage
