@@ -61,7 +61,7 @@ impl Position2D {
     }
 }
 
-mod conversions {
+mod from {
     use super::Position2D;
     use bevy::math::Vec2;
 
@@ -71,17 +71,25 @@ mod conversions {
         }
     }
 
-    impl From<&Vec2> for Position2D {
-        fn from(value: &Vec2) -> Self {
-            Self::from_f32(value.x, value.y)
-        }
-    }
-
     impl From<Position2D> for Vec2 {
         fn from(value: Position2D) -> Self {
             Self::new(value.x, value.y)
         }
     }
+
+    impl<T> From<&T> for Position2D
+    where
+        T: Into<Position2D>,
+    {
+        fn from(value: &T) -> Self {
+            value.into()
+        }
+    }
+}
+
+mod into {
+    use super::Position2D;
+    use bevy::math::Vec2;
 
     impl From<&Position2D> for Vec2 {
         fn from(value: &Position2D) -> Self {

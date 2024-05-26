@@ -61,3 +61,23 @@ pub fn propogate_spatial2d(
         },
     )
 }
+
+pub fn update_compass_from_rotation2d(mut query: Query<(&mut Compass, &Rotation2D)>) {
+    query.par_iter_mut().for_each(|(mut compass, rotation)| {
+        *compass = rotation.into();
+    });
+}
+
+pub fn update_compassrose_from_rotation2d(mut query: Query<(&mut CompassRose, &Rotation2D)>) {
+    query.par_iter_mut().for_each(|(mut compass, rotation)| {
+        *compass = rotation.into();
+    });
+}
+
+pub fn update_compasshalfwinds_from_rotation2d(
+    mut query: Query<(&mut CompassHalfwinds, &Rotation2D)>,
+) {
+    query.par_iter_mut().for_each(|(mut compass, rotation)| {
+        *compass = rotation.into();
+    });
+}

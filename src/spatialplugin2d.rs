@@ -15,15 +15,28 @@ impl Plugin for SpatialPlugin2D {
             .register_type::<Scale2D>()
             .register_type::<Degrees>()
             .register_type::<Radians>()
+            .register_type::<Compass>()
+            .register_type::<CompassHalfwinds>()
+            .register_type::<CompassRose>()
             .add_systems(
                 PostUpdate,
-                (propogate_spatial2d)
+                (
+                    propogate_spatial2d,
+                    update_compass_from_rotation2d,
+                    update_compasshalfwinds_from_rotation2d,
+                    update_compassrose_from_rotation2d,
+                )
                     .in_set(SpatialSystems2D::Propogate)
                     .before(TransformSystem::TransformPropagate),
             )
             .add_systems(
                 PostStartup,
-                (propogate_spatial2d)
+                (
+                    propogate_spatial2d,
+                    update_compass_from_rotation2d,
+                    update_compasshalfwinds_from_rotation2d,
+                    update_compassrose_from_rotation2d,
+                )
                     .in_set(SpatialSystems2D::Propogate)
                     .before(TransformSystem::TransformPropagate),
             );

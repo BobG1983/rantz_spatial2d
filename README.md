@@ -51,6 +51,10 @@ The `ScalePropogation` enum has two variants:
 
 **Absolute:** The rotation of a child entity is absolute and does not take into account its parent's rotation.
 
+### Compasses
+
+In addition to the above, and not included in the SpatialBundle2D are `Compass`, `CompassRose`, and `CompassHalfwinds`. It is very common in 2D games to need to know the compass direction a given entity is facing in order to choose which sprite to draw. These enums can be included as a component on anything with a Rotation2D, and as part of transform propogation, there values will be updated to match the objects rotation.
+
 ## Usage
 
 Add the crate to your `Cargo.toml` and `SpatialPlugin2D` to your app.

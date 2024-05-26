@@ -1,3 +1,6 @@
+mod compass;
+mod compass_halfwinds;
+mod compass_rose;
 mod degrees;
 mod draw_order;
 mod position2d;
@@ -9,6 +12,9 @@ mod spatialbundle2d;
 mod spatialplugin2d;
 
 pub mod components {
+    pub use crate::compass::Compass;
+    pub use crate::compass_halfwinds::CompassHalfwinds;
+    pub use crate::compass_rose::CompassRose;
     pub use crate::draw_order::DrawOrder;
     pub use crate::position2d::Position2D;
     pub use crate::position2d::PositionPropogation;
@@ -31,6 +37,9 @@ pub mod plugins {
 
 pub mod systems {
     pub use crate::propogation_systems::propogate_spatial2d;
+    pub use crate::propogation_systems::update_compass_from_rotation2d;
+    pub use crate::propogation_systems::update_compasshalfwinds_from_rotation2d;
+    pub use crate::propogation_systems::update_compassrose_from_rotation2d;
     pub use crate::propogation_systems::SpatialSystems2D;
 }
 
