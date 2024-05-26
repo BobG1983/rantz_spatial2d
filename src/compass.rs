@@ -10,6 +10,8 @@ pub enum Compass {
 }
 
 mod from {
+    use bevy::prelude::debug;
+
     use super::Compass;
     use crate::{
         components::Rotation2D,
@@ -18,6 +20,7 @@ mod from {
 
     impl From<Degrees> for Compass {
         fn from(degrees: Degrees) -> Self {
+            debug!("Compass from Degrees: {:?}", degrees);
             match degrees.to_f32() {
                 315.0..=360.0 | 0.0..45.0 => Self::E,
                 45.0..135.0 => Self::N,
@@ -28,24 +31,34 @@ mod from {
         }
     }
 
+    impl From<&Degrees> for Compass {
+        fn from(degrees: &Degrees) -> Self {
+            Self::from(degrees.clone())
+        }
+    }
+
     impl From<Radians> for Compass {
         fn from(radians: Radians) -> Self {
             Self::from(Degrees::from(radians))
         }
     }
 
+    impl From<&Radians> for Compass {
+        fn from(radians: &Radians) -> Self {
+            Self::from(radians.clone())
+        }
+    }
+
     impl From<Rotation2D> for Compass {
         fn from(rotation: Rotation2D) -> Self {
+            debug!("Compass from Rotation2D: {:?}", rotation);
             Self::from(rotation.degrees())
         }
     }
 
-    impl<T> From<&T> for Compass
-    where
-        T: Into<Compass>,
-    {
-        fn from(value: &T) -> Self {
-            value.into()
+    impl From<&Rotation2D> for Compass {
+        fn from(rotation: &Rotation2D) -> Self {
+            Self::from(rotation.clone())
         }
     }
 }

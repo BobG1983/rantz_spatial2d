@@ -38,14 +38,32 @@ mod from {
         }
     }
 
+    impl From<&Degrees> for Radians {
+        fn from(degrees: &Degrees) -> Self {
+            Self::from(degrees.clone())
+        }
+    }
+
     impl From<f32> for Radians {
         fn from(value: f32) -> Self {
             Self::from_f32(value)
         }
     }
 
+    impl From<&f32> for Radians {
+        fn from(value: &f32) -> Self {
+            Self::from_f32(*value)
+        }
+    }
+
     impl From<Rotation2D> for Radians {
         fn from(rotation: Rotation2D) -> Self {
+            rotation.radians()
+        }
+    }
+
+    impl From<&Rotation2D> for Radians {
+        fn from(rotation: &Rotation2D) -> Self {
             rotation.radians()
         }
     }
@@ -61,6 +79,12 @@ mod from {
         }
     }
 
+    impl From<&Compass> for Radians {
+        fn from(compass: &Compass) -> Self {
+            Self::from(compass.clone())
+        }
+    }
+
     impl From<CompassRose> for Radians {
         fn from(compass_rose: CompassRose) -> Self {
             match compass_rose {
@@ -73,6 +97,12 @@ mod from {
                 CompassRose::SW => Self::from_f32(std::f32::consts::FRAC_PI_4 * 5.0),
                 CompassRose::NW => Self::from_f32(std::f32::consts::FRAC_PI_4 * 3.0),
             }
+        }
+    }
+
+    impl From<&CompassRose> for Radians {
+        fn from(compass_rose: &CompassRose) -> Self {
+            Self::from(compass_rose.clone())
         }
     }
 
@@ -99,12 +129,9 @@ mod from {
         }
     }
 
-    impl<T> From<&T> for Radians
-    where
-        T: Into<Radians>,
-    {
-        fn from(value: &T) -> Self {
-            value.into()
+    impl From<&CompassHalfwinds> for Radians {
+        fn from(compass_halfwinds: &CompassHalfwinds) -> Self {
+            Self::from(compass_halfwinds.clone())
         }
     }
 }

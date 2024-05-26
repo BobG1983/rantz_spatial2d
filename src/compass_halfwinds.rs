@@ -55,15 +55,33 @@ mod from {
         }
     }
 
+    impl From<&Degrees> for CompassHalfwinds {
+        fn from(degrees: &Degrees) -> Self {
+            Self::from(degrees.clone())
+        }
+    }
+
     impl From<Radians> for CompassHalfwinds {
         fn from(radians: Radians) -> Self {
             Self::from(Degrees::from(radians))
         }
     }
 
+    impl From<&Radians> for CompassHalfwinds {
+        fn from(radians: &Radians) -> Self {
+            Self::from(radians.clone())
+        }
+    }
+
     impl From<Rotation2D> for CompassHalfwinds {
         fn from(rotation: Rotation2D) -> Self {
             Self::from(Degrees::from(rotation))
+        }
+    }
+
+    impl From<&Rotation2D> for CompassHalfwinds {
+        fn from(rotation: &Rotation2D) -> Self {
+            Self::from(rotation.clone())
         }
     }
 
@@ -75,6 +93,12 @@ mod from {
                 Compass::E => Self::E,
                 Compass::W => Self::W,
             }
+        }
+    }
+
+    impl From<&Compass> for CompassHalfwinds {
+        fn from(compass_cardinal: &Compass) -> Self {
+            Self::from(compass_cardinal.clone())
         }
     }
 
@@ -93,12 +117,9 @@ mod from {
         }
     }
 
-    impl<T> From<&T> for CompassHalfwinds
-    where
-        T: Into<CompassHalfwinds>,
-    {
-        fn from(value: &T) -> Self {
-            value.into()
+    impl From<&CompassRose> for CompassHalfwinds {
+        fn from(compass_cardinal: &CompassRose) -> Self {
+            Self::from(compass_cardinal.clone())
         }
     }
 }
@@ -111,6 +132,12 @@ mod into {
 
     impl From<CompassHalfwinds> for Vec2 {
         fn from(compass: CompassHalfwinds) -> Self {
+            Vec2::from(Radians::from(compass))
+        }
+    }
+
+    impl From<&CompassHalfwinds> for Vec2 {
+        fn from(compass: &CompassHalfwinds) -> Self {
             Vec2::from(Radians::from(compass))
         }
     }

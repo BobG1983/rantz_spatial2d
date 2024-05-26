@@ -39,15 +39,33 @@ mod from {
         }
     }
 
+    impl From<&Degrees> for CompassRose {
+        fn from(degrees: &Degrees) -> Self {
+            Self::from(degrees.clone())
+        }
+    }
+
     impl From<Radians> for CompassRose {
         fn from(radians: Radians) -> Self {
             Self::from(Degrees::from(radians))
         }
     }
 
+    impl From<&Radians> for CompassRose {
+        fn from(radians: &Radians) -> Self {
+            Self::from(radians.clone())
+        }
+    }
+
     impl From<Rotation2D> for CompassRose {
         fn from(rotation: Rotation2D) -> Self {
             Self::from(Degrees::from(rotation))
+        }
+    }
+
+    impl From<&Rotation2D> for CompassRose {
+        fn from(rotation: &Rotation2D) -> Self {
+            Self::from(rotation.clone())
         }
     }
 
@@ -62,12 +80,9 @@ mod from {
         }
     }
 
-    impl<T> From<&T> for CompassRose
-    where
-        T: Into<CompassRose>,
-    {
-        fn from(value: &T) -> Self {
-            value.into()
+    impl From<&Compass> for CompassRose {
+        fn from(compass: &Compass) -> Self {
+            Self::from(compass.clone())
         }
     }
 }

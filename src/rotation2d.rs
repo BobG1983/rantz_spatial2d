@@ -78,6 +78,12 @@ mod from {
         }
     }
 
+    impl From<&Radians> for Rotation2D {
+        fn from(radians: &Radians) -> Self {
+            Self::from(radians.clone())
+        }
+    }
+
     impl From<Degrees> for Rotation2D {
         fn from(degrees: Degrees) -> Self {
             Self {
@@ -87,15 +93,33 @@ mod from {
         }
     }
 
+    impl From<&Degrees> for Rotation2D {
+        fn from(degrees: &Degrees) -> Self {
+            Self::from(degrees.clone())
+        }
+    }
+
     impl From<Quat> for Rotation2D {
         fn from(value: Quat) -> Self {
             Self::from_f32_radians(value.to_euler(EulerRot::XYZ).2)
         }
     }
 
+    impl From<&Quat> for Rotation2D {
+        fn from(value: &Quat) -> Self {
+            Self::from(value.clone())
+        }
+    }
+
     impl From<Compass> for Rotation2D {
-        fn from(compass_cardinal: Compass) -> Self {
-            Self::from(Radians::from(compass_cardinal))
+        fn from(compass: Compass) -> Self {
+            Self::from(Radians::from(compass))
+        }
+    }
+
+    impl From<&Compass> for Rotation2D {
+        fn from(compass: &Compass) -> Self {
+            Self::from(compass.clone())
         }
     }
 
@@ -105,18 +129,21 @@ mod from {
         }
     }
 
+    impl From<&CompassRose> for Rotation2D {
+        fn from(compass_rose: &CompassRose) -> Self {
+            Self::from(compass_rose.clone())
+        }
+    }
+
     impl From<CompassHalfwinds> for Rotation2D {
         fn from(compass_halfwinds: CompassHalfwinds) -> Self {
             Self::from(Radians::from(compass_halfwinds))
         }
     }
 
-    impl<T> From<&T> for Rotation2D
-    where
-        T: Into<Radians>,
-    {
-        fn from(value: &T) -> Self {
-            value.into()
+    impl From<&CompassHalfwinds> for Rotation2D {
+        fn from(compass_halfwinds: &CompassHalfwinds) -> Self {
+            Self::from(compass_halfwinds.clone())
         }
     }
 }
