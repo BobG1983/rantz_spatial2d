@@ -22,7 +22,6 @@ pub fn propogate_spatial2d(
     all_parent_positions: Query<&Position2D, With<Children>>,
     all_parent_scales: Query<&Scale2D, With<Children>>,
 ) {
-    debug!("Propogating spatial2d");
     query.par_iter_mut().for_each(
         |(mut transform, position, rotation, scale, draw_order, r_prop, p_prop, s_prop, parent)| {
             let mut new_rot = Quat::from_rotation_z(rotation.degrees().into());
@@ -64,13 +63,9 @@ pub fn propogate_spatial2d(
 }
 
 pub fn update_compass_from_rotation2d(mut query: Query<(&mut Compass, &Rotation2D)>) {
-    debug!("Updating compass from rotation2d");
     query.par_iter_mut().for_each(|(mut compass, rotation)| {
-        debug!("Updating compass from rotation2d: {:?}", rotation);
         *compass = Compass::from(rotation);
-        debug!("Done updating compass from rotation2d: {:?}", compass);
     });
-    debug!("Done updating compass from rotation2d");
 }
 
 pub fn update_compassrose_from_rotation2d(mut query: Query<(&mut CompassRose, &Rotation2D)>) {
