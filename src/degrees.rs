@@ -13,13 +13,18 @@ impl Degrees {
         self.0
     }
 
-    pub fn from_f32(value: f32) -> Self {
-        Self(value % 360.)
+    pub fn from_f32(angle: f32) -> Self {
+        // normalize to [-180, 180]
+        let mut normalized_angle = ((angle % 360.0) + 360.) % 360.0;
+        if normalized_angle > 180. {
+            normalized_angle -= 360.;
+        }
+        Self(normalized_angle)
     }
 
     pub const ZERO: Self = Self(0.);
-    pub const UP: Self = Self(90.);
-    pub const DOWN: Self = Self(270.);
+    pub const UP: Self = Self(-90.);
+    pub const DOWN: Self = Self(90.);
     pub const LEFT: Self = Self(180.);
     pub const RIGHT: Self = Self(0.);
 }

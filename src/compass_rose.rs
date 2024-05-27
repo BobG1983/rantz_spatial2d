@@ -26,14 +26,15 @@ mod from {
     impl From<Degrees> for CompassRose {
         fn from(degrees: Degrees) -> Self {
             match degrees.to_f32() {
-                330.0..=360.0 | 0.0..30.0 => Self::E,
-                30.0..60.0 => Self::NE,
-                60.0..120.0 => Self::N,
-                120.0..150.0 => Self::NW,
-                150.0..210.0 => Self::W,
-                210.0..240.0 => Self::SW,
-                240.0..300.0 => Self::S,
-                300.0..330.0 => Self::SE,
+                // Degrees in range of -180 to 180, split into 8 pie segments with E as 0
+                -112.5..=-67.5 => Self::N,
+                -67.5..=-22.5 => Self::NE,
+                -22.5..=22.5 => Self::E,
+                22.5..=67.5 => Self::SE,
+                67.5..=112.5 => Self::S,
+                112.5..=157.5 => Self::SW,
+                157.5..=180.0 | -180.0..=-157.5 => Self::W,
+                -157.5..=-112.5 => Self::NW,
                 _ => unreachable!(),
             }
         }

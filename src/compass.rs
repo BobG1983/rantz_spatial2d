@@ -10,8 +10,6 @@ pub enum Compass {
 }
 
 mod from {
-    use bevy::prelude::debug;
-
     use super::Compass;
     use crate::{
         components::Rotation2D,
@@ -20,12 +18,12 @@ mod from {
 
     impl From<Degrees> for Compass {
         fn from(degrees: Degrees) -> Self {
-            debug!("Compass from Degrees: {:?}", degrees);
             match degrees.to_f32() {
-                315.0..=360.0 | 0.0..45.0 => Self::E,
-                45.0..135.0 => Self::N,
-                135.0..225.0 => Self::W,
-                225.0..315.0 => Self::S,
+                // Degrees in range of -180 to 180, split into 4 pie segments with E as 0
+                -135.0..=-45.0 => Self::N,
+                -45.0..=45.0 => Self::E,
+                45.0..=135.0 => Self::S,
+                135.0..=180.0 | -180.0..=-135.0 => Self::W,
                 _ => unreachable!(),
             }
         }
@@ -51,7 +49,6 @@ mod from {
 
     impl From<Rotation2D> for Compass {
         fn from(rotation: Rotation2D) -> Self {
-            debug!("Compass from Rotation2D: {:?}", rotation);
             Self::from(rotation.degrees())
         }
     }
