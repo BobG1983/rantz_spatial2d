@@ -18,11 +18,15 @@ mod from {
 
     impl From<Degrees> for Compass {
         fn from(degrees: Degrees) -> Self {
-            match degrees.to_f32() {
-                // Degrees in range of -180 to 180, split into 4 pie segments with E as 0
-                -135.0..=-45.0 => Self::N,
+            let angle = degrees.to_f32();
+            let mut normalized_angle = ((angle % 360.0) + 360.) % 360.0;
+            if normalized_angle > 180. {
+                normalized_angle -= 360.;
+            }
+            match normalized_angle {
+                -135.0..=-45.0 => Self::S,
                 -45.0..=45.0 => Self::E,
-                45.0..=135.0 => Self::S,
+                45.0..=135.0 => Self::N,
                 135.0..=180.0 | -180.0..=-135.0 => Self::W,
                 _ => unreachable!(),
             }

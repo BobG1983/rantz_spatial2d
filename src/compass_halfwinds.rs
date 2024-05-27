@@ -33,24 +33,28 @@ mod from {
 
     impl From<Degrees> for CompassHalfwinds {
         fn from(degrees: Degrees) -> Self {
-            match degrees.to_f32() {
-                // Split into 6 pie segments with E as 0
-                -101.25..=-78.75 => Self::N,
-                -78.75..=-56.25 => Self::NNE,
-                -56.25..=-33.75 => Self::NE,
-                -33.75..=-11.25 => Self::ENE,
+            let angle = degrees.to_f32();
+            let mut normalized_angle = ((angle % 360.0) + 360.) % 360.0;
+            if normalized_angle > 180. {
+                normalized_angle -= 360.;
+            }
+            match normalized_angle {
+                -101.25..=-78.75 => Self::S,
+                -78.75..=-56.25 => Self::SSE,
+                -56.25..=-33.75 => Self::SE,
+                -33.75..=-11.25 => Self::ESE,
                 -11.25..=11.25 => Self::E,
-                11.25..=33.75 => Self::ESE,
-                33.75..=56.25 => Self::SE,
-                56.25..=78.75 => Self::SSE,
-                78.75..=101.25 => Self::S,
-                101.25..=123.75 => Self::SSW,
-                123.75..=146.25 => Self::SW,
-                146.25..=168.75 => Self::WSW,
+                11.25..=33.75 => Self::ENE,
+                33.75..=56.25 => Self::NE,
+                56.25..=78.75 => Self::NNE,
+                78.75..=101.25 => Self::N,
+                101.25..=123.75 => Self::NNW,
+                123.75..=146.25 => Self::NW,
+                146.25..=168.75 => Self::WNW,
                 168.75..=180. | -180.0..=-168.75 => Self::W,
-                -168.75..=-146.25 => Self::WNW,
-                -146.25..=-123.75 => Self::NW,
-                -123.75..=-101.25 => Self::NNW,
+                -168.75..=-146.25 => Self::WSW,
+                -146.25..=-123.75 => Self::SW,
+                -123.75..=-101.25 => Self::SSW,
                 _ => unreachable!(),
             }
         }

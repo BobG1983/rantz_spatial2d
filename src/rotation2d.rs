@@ -154,7 +154,13 @@ mod into {
 
     impl From<Rotation2D> for Quat {
         fn from(rotation: Rotation2D) -> Self {
-            Quat::from_rotation_z(rotation.radians().into())
+            Quat::from_rotation_z(rotation.radians().to_f32())
+        }
+    }
+
+    impl From<&Rotation2D> for Quat {
+        fn from(rotation: &Rotation2D) -> Self {
+            Quat::from_rotation_z(rotation.radians().to_f32())
         }
     }
 }

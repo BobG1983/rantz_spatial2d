@@ -1,6 +1,5 @@
 pub use crate::prelude::Degrees;
 use bevy::prelude::*;
-use std::f32::consts::{PI, TAU};
 
 #[derive(Default, Clone, Copy, PartialEq, Debug, Deref, DerefMut, Reflect)]
 pub struct Radians(f32);
@@ -15,17 +14,12 @@ impl Radians {
     }
 
     pub fn from_f32(angle: f32) -> Self {
-        // normalize to [-PI, PI]
-        let mut normalized_angle = ((angle % TAU) + TAU) % TAU;
-        if normalized_angle > PI {
-            normalized_angle -= TAU;
-        }
-        Self(normalized_angle)
+        Self(angle)
     }
 
     pub const ZERO: Self = Self(0.);
     pub const UP: Self = Self(std::f32::consts::FRAC_PI_2);
-    pub const DOWN: Self = Self(std::f32::consts::PI + std::f32::consts::FRAC_PI_2);
+    pub const DOWN: Self = Self(-std::f32::consts::FRAC_PI_2);
     pub const LEFT: Self = Self(std::f32::consts::PI);
     pub const RIGHT: Self = Self::ZERO;
 }

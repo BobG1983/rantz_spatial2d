@@ -24,7 +24,7 @@ pub fn propogate_spatial2d(
 ) {
     query.par_iter_mut().for_each(
         |(mut transform, position, rotation, scale, draw_order, r_prop, p_prop, s_prop, parent)| {
-            let mut new_rot = Quat::from_rotation_z(rotation.degrees().into());
+            let mut new_rot = Quat::from(rotation);
             let mut new_pos = Vec3::new(position.x, position.y, draw_order.into());
             let mut new_scale = Vec3::new(scale.x, scale.y, 1.0);
 
