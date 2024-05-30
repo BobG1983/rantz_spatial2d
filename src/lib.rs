@@ -4,11 +4,14 @@ mod compass_rose;
 mod degrees;
 mod draw_order;
 mod position2d;
+#[cfg(feature = "bevy")]
 mod propogation_systems;
 mod radians;
 mod rotation2d;
 mod scale2d;
+#[cfg(feature = "bevy")]
 mod spatialbundle2d;
+#[cfg(feature = "bevy")]
 mod spatialplugin2d;
 
 pub mod components {
@@ -22,7 +25,9 @@ pub mod components {
     pub use crate::rotation2d::RotationPropogation;
     pub use crate::scale2d::Scale2D;
     pub use crate::scale2d::ScalePropogation;
+    #[cfg(feature = "bevy")]
     pub use crate::spatialbundle2d::SpatialBundle2D;
+    #[cfg(feature = "bevy")]
     pub use crate::spatialbundle2d::SpatialBundle2DRaw;
 }
 
@@ -31,10 +36,12 @@ pub mod math {
     pub use crate::radians::Radians;
 }
 
+#[cfg(feature = "bevy")]
 pub mod plugins {
     pub use crate::spatialplugin2d::SpatialPlugin2D;
 }
 
+#[cfg(feature = "bevy")]
 pub mod systems {
     pub use crate::propogation_systems::propogate_spatial2d;
     pub use crate::propogation_systems::update_compass_from_rotation2d;
@@ -46,6 +53,9 @@ pub mod systems {
 pub mod prelude {
     pub use crate::components::*;
     pub use crate::math::*;
+
+    #[cfg(feature = "bevy")]
     pub use crate::plugins::*;
+    #[cfg(feature = "bevy")]
     pub use crate::systems::*;
 }

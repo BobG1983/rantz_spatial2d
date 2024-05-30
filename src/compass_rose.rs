@@ -1,6 +1,9 @@
-use bevy::prelude::*;
-
-#[derive(Component, Default, Clone, Copy, PartialEq, Eq, Debug, Hash, Reflect)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, Debug, Hash)]
+#[cfg_attr(
+    feature = "bevy",
+    derive(bevy::prelude::Component, bevy::prelude::Reflect)
+)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CompassRose {
     #[default]
     N,
@@ -13,8 +16,6 @@ pub enum CompassRose {
     NW,
 }
 
-impl CompassRose {}
-
 mod from {
     use super::CompassRose;
     use crate::{
@@ -25,7 +26,7 @@ mod from {
 
     impl From<Degrees> for CompassRose {
         fn from(degrees: Degrees) -> Self {
-                        let angle = degrees.to_f32();
+            let angle = degrees.to_f32();
             let mut normalized_angle = ((angle % 360.0) + 360.) % 360.0;
             if normalized_angle > 180. {
                 normalized_angle -= 360.;
@@ -92,22 +93,24 @@ mod from {
     }
 }
 
+#[cfg(feature = "bevy")]
 mod into {
     use super::CompassRose;
     use crate::math::Radians;
+    #[cfg(feature = "bevy")]
     use bevy::math::Vec2;
 
+    #[cfg(feature = "bevy")]
     impl From<CompassRose> for Vec2 {
         fn from(compass: CompassRose) -> Self {
             Vec2::from(Radians::from(compass))
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<&CompassRose> for Vec2 {
         fn from(compass: &CompassRose) -> Self {
             compass.into()
         }
     }
 }
-
-mod operators {}

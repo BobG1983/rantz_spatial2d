@@ -1,6 +1,9 @@
-pub use bevy::prelude::*;
-
-#[derive(Component, Default, Clone, Copy, PartialEq, Debug, Reflect)]
+#[derive(Default, Clone, Copy, PartialEq, Debug)]
+#[cfg_attr(
+    feature = "bevy",
+    derive(bevy::prelude::Component, bevy::prelude::Reflect)
+)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct DrawOrder(f32);
 
 impl DrawOrder {

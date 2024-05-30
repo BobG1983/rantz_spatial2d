@@ -1,7 +1,11 @@
 pub use crate::prelude::*;
-pub use bevy::prelude::*;
 
-#[derive(Default, Clone, Copy, PartialEq, Debug, Deref, DerefMut, Reflect)]
+#[derive(Default, Clone, Copy, PartialEq, Debug)]
+#[cfg_attr(
+    feature = "bevy",
+    derive(bevy::prelude::Reflect, bevy::prelude::Deref, bevy::prelude::DerefMut)
+)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Degrees(f32);
 
 impl Degrees {
@@ -17,6 +21,10 @@ impl Degrees {
         Self(angle)
     }
 
+    pub fn to_radians_f32(self) -> f32 {
+        self.0.to_radians()
+    }
+
     pub const ZERO: Self = Self(0.);
     pub const UP: Self = Self(90.);
     pub const DOWN: Self = Self(-90.);
@@ -29,7 +37,7 @@ mod from {
 
     impl From<Radians> for Degrees {
         fn from(radians: Radians) -> Self {
-            Self::from_f32(radians.to_degrees())
+            Self::from_f32(radians.to_degrees_f32())
         }
     }
 
@@ -132,15 +140,20 @@ mod from {
 }
 
 mod into {
-    use super::{Degrees, Radians};
+    use super::Degrees;
+    #[cfg(feature = "bevy")]
+    use super::Radians;
+    #[cfg(feature = "bevy")]
     use bevy::math::{Quat, Vec2};
 
+    #[cfg(feature = "bevy")]
     impl From<Degrees> for Quat {
         fn from(value: Degrees) -> Self {
             Quat::from_rotation_z(value.to_radians().into())
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<&Degrees> for Quat {
         fn from(value: &Degrees) -> Self {
             Quat::from_rotation_z(value.to_radians().into())
@@ -159,12 +172,14 @@ mod into {
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<Degrees> for Vec2 {
         fn from(value: Degrees) -> Self {
             Vec2::from_angle(Radians::from(value).into())
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<&Degrees> for Vec2 {
         fn from(value: &Degrees) -> Self {
             Vec2::from_angle(Radians::from(value).into())
@@ -201,14 +216,14 @@ mod operators {
         impl Add<Radians> for Degrees {
             type Output = Degrees;
             fn add(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() + rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() + rhs.to_degrees_f32())
             }
         }
 
         impl Add<&Radians> for Degrees {
             type Output = Degrees;
             fn add(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() + rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() + rhs.to_degrees_f32())
             }
         }
 
@@ -236,14 +251,14 @@ mod operators {
         impl Add<Radians> for &Degrees {
             type Output = Degrees;
             fn add(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() + rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() + rhs.to_degrees_f32())
             }
         }
 
         impl Add<&Radians> for &Degrees {
             type Output = Degrees;
             fn add(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() + rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() + rhs.to_degrees_f32())
             }
         }
 
@@ -267,13 +282,13 @@ mod operators {
 
         impl AddAssign<Radians> for Degrees {
             fn add_assign(&mut self, rhs: Radians) {
-                *self = (*self + rhs.to_degrees()) % 360.0;
+                *self = (*self + rhs.to_degrees_f32()) % 360.0;
             }
         }
 
         impl AddAssign<&Radians> for Degrees {
             fn add_assign(&mut self, rhs: &Radians) {
-                *self = (*self + rhs.to_degrees()) % 360.0;
+                *self = (*self + rhs.to_degrees_f32()) % 360.0;
             }
         }
     }
@@ -305,14 +320,14 @@ mod operators {
         impl Sub<Radians> for Degrees {
             type Output = Degrees;
             fn sub(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() - rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() - rhs.to_degrees_f32())
             }
         }
 
         impl Sub<&Radians> for Degrees {
             type Output = Degrees;
             fn sub(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() - rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() - rhs.to_degrees_f32())
             }
         }
 
@@ -340,14 +355,14 @@ mod operators {
         impl Sub<Radians> for &Degrees {
             type Output = Degrees;
             fn sub(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() - rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() - rhs.to_degrees_f32())
             }
         }
 
         impl Sub<&Radians> for &Degrees {
             type Output = Degrees;
             fn sub(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() - rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() - rhs.to_degrees_f32())
             }
         }
 
@@ -371,13 +386,13 @@ mod operators {
 
         impl SubAssign<Radians> for Degrees {
             fn sub_assign(&mut self, rhs: Radians) {
-                *self = (*self - rhs.to_degrees()) % 360.0;
+                *self = (*self - rhs.to_degrees_f32()) % 360.0;
             }
         }
 
         impl SubAssign<&Radians> for Degrees {
             fn sub_assign(&mut self, rhs: &Radians) {
-                *self = (*self - rhs.to_degrees()) % 360.0;
+                *self = (*self - rhs.to_degrees_f32()) % 360.0;
             }
         }
     }
@@ -409,14 +424,14 @@ mod operators {
         impl Mul<Radians> for Degrees {
             type Output = Degrees;
             fn mul(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() * rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() * rhs.to_degrees_f32())
             }
         }
 
         impl Mul<&Radians> for Degrees {
             type Output = Degrees;
             fn mul(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() * rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() * rhs.to_degrees_f32())
             }
         }
 
@@ -444,14 +459,14 @@ mod operators {
         impl Mul<Radians> for &Degrees {
             type Output = Degrees;
             fn mul(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() * rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() * rhs.to_degrees_f32())
             }
         }
 
         impl Mul<&Radians> for &Degrees {
             type Output = Degrees;
             fn mul(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() * rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() * rhs.to_degrees_f32())
             }
         }
         impl MulAssign<f32> for Degrees {
@@ -474,13 +489,13 @@ mod operators {
 
         impl MulAssign<Radians> for Degrees {
             fn mul_assign(&mut self, rhs: Radians) {
-                *self = (*self * rhs.to_degrees()) % 360.0;
+                *self = (*self * rhs.to_degrees_f32()) % 360.0;
             }
         }
 
         impl MulAssign<&Radians> for Degrees {
             fn mul_assign(&mut self, rhs: &Radians) {
-                *self = (*self * rhs.to_degrees()) % 360.0;
+                *self = (*self * rhs.to_degrees_f32()) % 360.0;
             }
         }
     }
@@ -512,14 +527,14 @@ mod operators {
         impl Div<Radians> for Degrees {
             type Output = Degrees;
             fn div(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() / rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() / rhs.to_degrees_f32())
             }
         }
 
         impl Div<&Radians> for Degrees {
             type Output = Degrees;
             fn div(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() / rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() / rhs.to_degrees_f32())
             }
         }
 
@@ -547,14 +562,14 @@ mod operators {
         impl Div<Radians> for &Degrees {
             type Output = Degrees;
             fn div(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() / rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() / rhs.to_degrees_f32())
             }
         }
 
         impl Div<&Radians> for &Degrees {
             type Output = Degrees;
             fn div(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() / rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() / rhs.to_degrees_f32())
             }
         }
 
@@ -578,13 +593,13 @@ mod operators {
 
         impl DivAssign<Radians> for Degrees {
             fn div_assign(&mut self, rhs: Radians) {
-                *self = (*self / rhs.to_degrees()) % 360.0;
+                *self = (*self / rhs.to_degrees_f32()) % 360.0;
             }
         }
 
         impl DivAssign<&Radians> for Degrees {
             fn div_assign(&mut self, rhs: &Radians) {
-                *self = (*self / rhs.to_degrees()) % 360.0;
+                *self = (*self / rhs.to_degrees_f32()) % 360.0;
             }
         }
     }
@@ -616,14 +631,14 @@ mod operators {
         impl Rem<Radians> for Degrees {
             type Output = Degrees;
             fn rem(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() % rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() % rhs.to_degrees_f32())
             }
         }
 
         impl Rem<&Radians> for Degrees {
             type Output = Degrees;
             fn rem(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() % rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() % rhs.to_degrees_f32())
             }
         }
 
@@ -651,14 +666,14 @@ mod operators {
         impl Rem<Radians> for &Degrees {
             type Output = Degrees;
             fn rem(self, rhs: Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() % rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() % rhs.to_degrees_f32())
             }
         }
 
         impl Rem<&Radians> for &Degrees {
             type Output = Degrees;
             fn rem(self, rhs: &Radians) -> Self::Output {
-                Degrees::from_f32(self.to_f32() % rhs.to_degrees())
+                Degrees::from_f32(self.to_f32() % rhs.to_degrees_f32())
             }
         }
 

@@ -1,13 +1,22 @@
 use crate::prelude::*;
-use bevy::prelude::*;
 
-#[derive(Component, Default, Clone, Copy, PartialEq, Debug, Reflect)]
+#[derive(Default, Clone, Copy, PartialEq, Debug)]
+#[cfg_attr(
+    feature = "bevy",
+    derive(bevy::prelude::Component, bevy::prelude::Reflect)
+)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Rotation2D {
     degrees: Degrees,
     radians: Radians,
 }
 
-#[derive(Component, Default, Clone, Copy, PartialEq, Eq, Debug, Reflect)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, Debug)]
+#[cfg_attr(
+    feature = "bevy",
+    derive(bevy::prelude::Component, bevy::prelude::Reflect)
+)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum RotationPropogation {
     #[default]
     Relative,
@@ -67,6 +76,7 @@ impl Rotation2D {
 
 mod from {
     use super::{Compass, CompassHalfwinds, CompassRose, Degrees, Radians, Rotation2D};
+    #[cfg(feature = "bevy")]
     use bevy::math::{EulerRot, Quat};
 
     impl From<Radians> for Rotation2D {
@@ -99,12 +109,14 @@ mod from {
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<Quat> for Rotation2D {
         fn from(value: Quat) -> Self {
             Self::from_f32_radians(value.to_euler(EulerRot::XYZ).2)
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<&Quat> for Rotation2D {
         fn from(value: &Quat) -> Self {
             Self::from(value.clone())
@@ -148,16 +160,20 @@ mod from {
     }
 }
 
+#[cfg(feature = "bevy")]
 mod into {
     use super::Rotation2D;
+    #[cfg(feature = "bevy")]
     use bevy::math::Quat;
 
+    #[cfg(feature = "bevy")]
     impl From<Rotation2D> for Quat {
         fn from(rotation: Rotation2D) -> Self {
             Quat::from_rotation_z(rotation.radians().to_f32())
         }
     }
 
+    #[cfg(feature = "bevy")]
     impl From<&Rotation2D> for Quat {
         fn from(rotation: &Rotation2D) -> Self {
             Quat::from_rotation_z(rotation.radians().to_f32())

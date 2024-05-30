@@ -55,7 +55,16 @@ The `ScalePropogation` enum has two variants:
 
 In addition to the above, and not included in the SpatialBundle2D are `Compass`, `CompassRose`, and `CompassHalfwinds`. It is very common in 2D games to need to know the compass direction a given entity is facing in order to choose which sprite to draw. These enums can be included as a component on anything with a Rotation2D, and as part of transform propogation, there values will be updated to match the objects rotation.
 
+## Feature Flags
+
+* `bevy` - Adds systems to update Bevys internal transform based on the contents of `SpatialBundle2D`, and a plugin to manage said systems, register types, etc.
+* `serde` - Adds impls for serde:Serialize and serde:Deserialize
+
+**Default:** `bevy`
+
 ## Usage
 
-Add the crate to your `Cargo.toml` and `SpatialPlugin2D` to your app.
+Add the crate to your `Cargo.toml`
+
+If using bevy, add `SpatialPlugin2D` to your app.
 
