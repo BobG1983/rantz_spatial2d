@@ -84,7 +84,6 @@ mod default {
     }
 }
 
-// TODO: Split and Genericize
 mod conversions {
     use super::Scale2D;
     #[cfg(feature = "bevy")]
@@ -663,33 +662,33 @@ mod operators {
 
         impl RemAssign<Scale2D> for Scale2D {
             fn rem_assign(&mut self, rhs: Scale2D) {
-                *self = *self * rhs;
+                *self = *self % rhs;
             }
         }
 
         impl RemAssign<&Scale2D> for Scale2D {
             fn rem_assign(&mut self, rhs: &Scale2D) {
-                *self = *self * rhs;
+                *self = *self % rhs;
             }
         }
 
         impl RemAssign<f32> for Scale2D {
             fn rem_assign(&mut self, rhs: f32) {
-                *self = *self * rhs;
+                *self = *self % rhs;
             }
         }
 
         #[cfg(feature = "bevy")]
         impl RemAssign<Vec2> for Scale2D {
             fn rem_assign(&mut self, rhs: Vec2) {
-                *self = *self * rhs;
+                *self = *self % rhs;
             }
         }
 
         #[cfg(feature = "bevy")]
         impl RemAssign<&Vec2> for Scale2D {
             fn rem_assign(&mut self, rhs: &Vec2) {
-                *self = *self * rhs;
+                *self = *self % rhs;
             }
         }
     }
