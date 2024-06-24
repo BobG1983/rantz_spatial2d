@@ -1,3 +1,4 @@
+#![allow(clippy::type_complexity)]
 mod compass;
 mod compass_halfwinds;
 mod compass_rose;
@@ -5,7 +6,7 @@ mod degrees;
 mod draw_order;
 mod position2d;
 #[cfg(feature = "bevy")]
-mod propogation_systems;
+mod propagation_systems;
 mod radians;
 mod rotation2d;
 mod scale2d;
@@ -20,11 +21,11 @@ pub mod components {
     pub use crate::compass_rose::CompassRose;
     pub use crate::draw_order::DrawOrder;
     pub use crate::position2d::Position2D;
-    pub use crate::position2d::PositionPropogation;
+    pub use crate::position2d::PositionPropagation;
     pub use crate::rotation2d::Rotation2D;
-    pub use crate::rotation2d::RotationPropogation;
+    pub use crate::rotation2d::RotationPropagation;
     pub use crate::scale2d::Scale2D;
-    pub use crate::scale2d::ScalePropogation;
+    pub use crate::scale2d::ScalePropagation;
     #[cfg(feature = "bevy")]
     pub use crate::spatialbundle2d::SpatialBundle2D;
     #[cfg(feature = "bevy")]
@@ -43,11 +44,11 @@ pub mod plugins {
 
 #[cfg(feature = "bevy")]
 pub mod systems {
-    pub use crate::propogation_systems::propogate_spatial2d;
-    pub use crate::propogation_systems::update_compass_from_rotation2d;
-    pub use crate::propogation_systems::update_compasshalfwinds_from_rotation2d;
-    pub use crate::propogation_systems::update_compassrose_from_rotation2d;
-    pub use crate::propogation_systems::SpatialSystems2D;
+    pub use crate::propagation_systems::propagate_spatial2d;
+    pub use crate::propagation_systems::update_compass_from_rotation2d;
+    pub use crate::propagation_systems::update_compass_halfwinds_from_rotation2d;
+    pub use crate::propagation_systems::update_compass_rose_from_rotation2d;
+    pub use crate::propagation_systems::SpatialSystems2D;
 }
 
 pub mod prelude {

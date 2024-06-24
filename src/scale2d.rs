@@ -18,7 +18,7 @@ pub struct Scale2D {
     derive(bevy::prelude::Component, bevy::prelude::Reflect)
 )]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum ScalePropogation {
+pub enum ScalePropagation {
     #[default]
     Relative,
     Absolute,

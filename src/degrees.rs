@@ -43,7 +43,7 @@ mod from {
 
     impl From<&Radians> for Degrees {
         fn from(radians: &Radians) -> Self {
-            Self::from(radians.clone())
+            Self::from(*radians)
         }
     }
 
@@ -84,7 +84,7 @@ mod from {
 
     impl From<&Compass> for Degrees {
         fn from(compass: &Compass) -> Self {
-            Self::from(compass.clone())
+            Self::from(*compass)
         }
     }
 
@@ -105,7 +105,7 @@ mod from {
 
     impl From<&CompassRose> for Degrees {
         fn from(compass_rose: &CompassRose) -> Self {
-            Self::from(compass_rose.clone())
+            Self::from(*compass_rose)
         }
     }
 
@@ -134,7 +134,7 @@ mod from {
 
     impl From<&CompassHalfwinds> for Degrees {
         fn from(compass_halfwinds: &CompassHalfwinds) -> Self {
-            Self::from(compass_halfwinds.clone())
+            Self::from(*compass_halfwinds)
         }
     }
 }
@@ -149,14 +149,14 @@ mod into {
     #[cfg(feature = "bevy")]
     impl From<Degrees> for Quat {
         fn from(value: Degrees) -> Self {
-            Quat::from_rotation_z(value.to_radians().into())
+            Quat::from_rotation_z(value.to_radians())
         }
     }
 
     #[cfg(feature = "bevy")]
     impl From<&Degrees> for Quat {
         fn from(value: &Degrees) -> Self {
-            Quat::from_rotation_z(value.to_radians().into())
+            Quat::from_rotation_z(value.to_radians())
         }
     }
 

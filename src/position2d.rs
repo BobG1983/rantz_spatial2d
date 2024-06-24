@@ -17,7 +17,7 @@ pub struct Position2D {
     derive(bevy::prelude::Component, bevy::prelude::Reflect)
 )]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum PositionPropogation {
+pub enum PositionPropagation {
     #[default]
     Relative,
     Absolute,

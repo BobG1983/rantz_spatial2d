@@ -7,9 +7,9 @@ pub struct SpatialBundle2DRaw {
     pub rotation: Rotation2D,
     pub scale: Scale2D,
     pub draw_order: DrawOrder,
-    pub r_prop: RotationPropogation,
-    pub p_prop: PositionPropogation,
-    pub s_prop: ScalePropogation,
+    pub r_prop: RotationPropagation,
+    pub p_prop: PositionPropagation,
+    pub s_prop: ScalePropagation,
 }
 
 #[derive(Bundle, Default)]
@@ -19,7 +19,7 @@ pub struct SpatialBundle2D {
     pub scale: Scale2D,
     pub draw_order: DrawOrder,
     pub spatial: SpatialBundle,
-    pub r_prop: RotationPropogation,
-    pub p_prop: PositionPropogation,
-    pub s_prop: ScalePropogation,
+    pub r_prop: RotationPropagation,
+    pub p_prop: PositionPropagation,
+    pub s_prop: ScalePropagation,
 }

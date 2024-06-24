@@ -7,9 +7,9 @@ pub struct SpatialPlugin2D;
 impl Plugin for SpatialPlugin2D {
     fn build(&self, app: &mut App) {
         app.register_type::<DrawOrder>()
-            .register_type::<RotationPropogation>()
-            .register_type::<PositionPropogation>()
-            .register_type::<ScalePropogation>()
+            .register_type::<RotationPropagation>()
+            .register_type::<PositionPropagation>()
+            .register_type::<ScalePropagation>()
             .register_type::<Position2D>()
             .register_type::<Rotation2D>()
             .register_type::<Scale2D>()
@@ -21,23 +21,23 @@ impl Plugin for SpatialPlugin2D {
             .add_systems(
                 PostUpdate,
                 (
-                    propogate_spatial2d,
+                    propagate_spatial2d,
                     update_compass_from_rotation2d,
-                    update_compasshalfwinds_from_rotation2d,
-                    update_compassrose_from_rotation2d,
+                    update_compass_halfwinds_from_rotation2d,
+                    update_compass_rose_from_rotation2d,
                 )
-                    .in_set(SpatialSystems2D::Propogate)
+                    .in_set(SpatialSystems2D::Propagate)
                     .before(TransformSystem::TransformPropagate),
             )
             .add_systems(
                 PostStartup,
                 (
-                    propogate_spatial2d,
+                    propagate_spatial2d,
                     update_compass_from_rotation2d,
-                    update_compasshalfwinds_from_rotation2d,
-                    update_compassrose_from_rotation2d,
+                    update_compass_halfwinds_from_rotation2d,
+                    update_compass_rose_from_rotation2d,
                 )
-                    .in_set(SpatialSystems2D::Propogate)
+                    .in_set(SpatialSystems2D::Propagate)
                     .before(TransformSystem::TransformPropagate),
             );
     }

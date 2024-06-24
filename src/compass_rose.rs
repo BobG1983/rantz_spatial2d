@@ -47,7 +47,7 @@ mod from {
 
     impl From<&Degrees> for CompassRose {
         fn from(degrees: &Degrees) -> Self {
-            Self::from(degrees.clone())
+            Self::from(*degrees)
         }
     }
 
@@ -59,7 +59,7 @@ mod from {
 
     impl From<&Radians> for CompassRose {
         fn from(radians: &Radians) -> Self {
-            Self::from(radians.clone())
+            Self::from(*radians)
         }
     }
 
@@ -71,7 +71,7 @@ mod from {
 
     impl From<&Rotation2D> for CompassRose {
         fn from(rotation: &Rotation2D) -> Self {
-            Self::from(rotation.clone())
+            Self::from(*rotation)
         }
     }
 
@@ -88,7 +88,7 @@ mod from {
 
     impl From<&Compass> for CompassRose {
         fn from(compass: &Compass) -> Self {
-            Self::from(compass.clone())
+            Self::from(*compass)
         }
     }
 }
@@ -110,7 +110,7 @@ mod into {
     #[cfg(feature = "bevy")]
     impl From<&CompassRose> for Vec2 {
         fn from(compass: &CompassRose) -> Self {
-            compass.into()
+            (*compass).into()
         }
     }
 }

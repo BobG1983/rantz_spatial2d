@@ -17,7 +17,7 @@ pub struct Rotation2D {
     derive(bevy::prelude::Component, bevy::prelude::Reflect)
 )]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
-pub enum RotationPropogation {
+pub enum RotationPropagation {
     #[default]
     Relative,
     Absolute,
@@ -90,7 +90,7 @@ mod from {
 
     impl From<&Radians> for Rotation2D {
         fn from(radians: &Radians) -> Self {
-            Self::from(radians.clone())
+            Self::from(*radians)
         }
     }
 
@@ -105,7 +105,7 @@ mod from {
 
     impl From<&Degrees> for Rotation2D {
         fn from(degrees: &Degrees) -> Self {
-            Self::from(degrees.clone())
+            Self::from(*degrees)
         }
     }
 
@@ -119,7 +119,7 @@ mod from {
     #[cfg(feature = "bevy")]
     impl From<&Quat> for Rotation2D {
         fn from(value: &Quat) -> Self {
-            Self::from(value.clone())
+            Self::from(*value)
         }
     }
 
@@ -131,7 +131,7 @@ mod from {
 
     impl From<&Compass> for Rotation2D {
         fn from(compass: &Compass) -> Self {
-            Self::from(compass.clone())
+            Self::from(*compass)
         }
     }
 
@@ -143,7 +143,7 @@ mod from {
 
     impl From<&CompassRose> for Rotation2D {
         fn from(compass_rose: &CompassRose) -> Self {
-            Self::from(compass_rose.clone())
+            Self::from(*compass_rose)
         }
     }
 
@@ -155,7 +155,7 @@ mod from {
 
     impl From<&CompassHalfwinds> for Rotation2D {
         fn from(compass_halfwinds: &CompassHalfwinds) -> Self {
-            Self::from(compass_halfwinds.clone())
+            Self::from(*compass_halfwinds)
         }
     }
 }
