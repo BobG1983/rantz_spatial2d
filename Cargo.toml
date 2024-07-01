@@ -9,7 +9,7 @@ repository = "https://github.com/BobG1983/rantz_spatial2d"
 homepage = "https://github.com/BobG1983/rantz_spatial2d"
 keywords = ["gamedev", "bevy"]
 categories = ["game-engines"]
-description = "A set of 2D spatial utilities for Bevy, including handling transform propogation"
+description = "A set of 2D spatial utilities for Bevy, including handling transform propagation"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 

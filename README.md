@@ -1,6 +1,6 @@
 # Rantz Spatial2D
 
-A 2d transform system for the [Bevy](https://bevyengine.org/) game engine that supports Transform propogation controls. 
+A 2d transform system for the [Bevy](https://bevyengine.org/) game engine that supports Transform propagation controls. 
 
 ## Core Types
 
@@ -26,26 +26,26 @@ When you add a `SpatialBundle2D` to an entity, it will also automatically add a 
 
 The `DrawOrder` struct is used to specify the draw layering of entities in your game. It is a wrapper over an f32, with higher values drawing above lower values. 
 
-## Propogation Types
-The following enums are used to control how the spatial components of an entity are propogated to its children.
+## propagation Types
+The following enums are used to control how the spatial components of an entity are propagated to its children.
 
-### `PositionPropogation`
-The `PositionPropogation` enum has two variants:
+### `PositionPropagation`
+The `PositionPropagation` enum has two variants:
 
 **Relative:** **[Default]**The position of a child entity is relative to its parent's position.
 
 **Absolute:** The position of a child entity is absolute and does not take into account its parent's position.
 
-### `RotationPropogation`
-The `RotationPropogation` enum has two variants:
+### `RotationPropagation`
+The `RotationPropagation` enum has two variants:
 
 **Relative:** **[Default]**The rotation of a child entity is relative to its parent's rotation.
 
 **Absolute:** The rotation of a child entity is absolute and does not take into account its parent's rotation.
-By default, both PositionPropogation and RotationPropogation are set to Relative.
+By default, both Positionpropagation and Rotationpropagation are set to Relative.
 
-### `ScalePropogation`
-The `ScalePropogation` enum has two variants:
+### `ScalePropagation`
+The `ScalePropagation` enum has two variants:
 
 **Relative:** **[Default]**The rotation of a child entity is relative to its parent's rotation.
 
@@ -53,7 +53,7 @@ The `ScalePropogation` enum has two variants:
 
 ### Compasses
 
-In addition to the above, and not included in the SpatialBundle2D are `Compass`, `CompassRose`, and `CompassHalfwinds`. It is very common in 2D games to need to know the compass direction a given entity is facing in order to choose which sprite to draw. These enums can be included as a component on anything with a Rotation2D, and as part of transform propogation, there values will be updated to match the objects rotation.
+In addition to the above, and not included in the SpatialBundle2D are `Compass`, `CompassRose`, and `CompassHalfwinds`. It is very common in 2D games to need to know the compass direction a given entity is facing in order to choose which sprite to draw. These enums can be included as a component on anything with a Rotation2D, and as part of transform propagation, there values will be updated to match the objects rotation.
 
 ## Feature Flags
 
