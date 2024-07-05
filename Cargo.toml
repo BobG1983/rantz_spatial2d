@@ -1,6 +1,6 @@
 [package]
 name = "rantz_spatial2d"
-version = "1.0.0"
+version = "2.0.0"
 authors = ["Robert Gardner'"]
 edition = "2021"
 license = "MIT OR Apache-2.0"
