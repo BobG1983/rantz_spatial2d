@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0](https://github.com/BobG1983/rantz_spatial2d/compare/v2.0.0...v3.0.0) - 2024-07-05
+
+### Other
+- [**breaking**] Readding SpatialBundle to SpatialBundle2D
+
 ## [2.0.0](https://github.com/BobG1983/rantz_spatial2d/compare/v1.0.0...v2.0.0) - 2024-07-05
 
 ### Other
