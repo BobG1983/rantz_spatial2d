@@ -1,3 +1,5 @@
+use bevy::prelude::Rot2;
+
 use crate::prelude::*;
 
 #[derive(Default, Clone, Copy, PartialEq, Debug)]
@@ -7,8 +9,7 @@ use crate::prelude::*;
 )]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Rotation2D {
-    degrees: Degrees,
-    radians: Radians,
+    rot: Rot2,
 }
 
 #[derive(Default, Clone, Copy, PartialEq, Eq, Debug)]
@@ -28,48 +29,23 @@ impl Rotation2D {
         Default::default()
     }
 
-    pub const ZERO: Self = Self {
-        degrees: Degrees::ZERO,
-        radians: Radians::ZERO,
-    };
-    pub const UP: Self = Self {
-        degrees: Degrees::UP,
-        radians: Radians::UP,
-    };
-    pub const DOWN: Self = Self {
-        degrees: Degrees::DOWN,
-        radians: Radians::DOWN,
-    };
-    pub const LEFT: Self = Self {
-        degrees: Degrees::LEFT,
-        radians: Radians::LEFT,
-    };
-    pub const RIGHT: Self = Self {
-        degrees: Degrees::RIGHT,
-        radians: Radians::RIGHT,
-    };
-
     pub fn radians(&self) -> Radians {
-        self.radians
+        Radians::from_f32(self.rot.as_radians())
     }
 
     pub fn degrees(&self) -> Degrees {
-        self.degrees
+        Degrees::from_f32(self.rot.as_degrees())
     }
 
     pub fn from_f32_radians(radians: f32) -> Self {
-        let radians = Radians::from_f32(radians);
         Self {
-            degrees: radians.into(),
-            radians,
+            rot: Rot2::radians(radians),
         }
     }
 
     pub fn from_f32_degrees(degrees: f32) -> Self {
-        let degrees = Degrees::from_f32(degrees);
         Self {
-            degrees,
-            radians: degrees.into(),
+            rot: Rot2::degrees(degrees),
         }
     }
 }
@@ -81,31 +57,25 @@ mod from {
 
     impl From<Radians> for Rotation2D {
         fn from(radians: Radians) -> Self {
-            Self {
-                degrees: radians.into(),
-                radians,
-            }
+            Self::from_f32_radians(radians.to_f32())
         }
     }
 
     impl From<&Radians> for Rotation2D {
         fn from(radians: &Radians) -> Self {
-            Self::from(*radians)
+            Self::from_f32_radians(radians.to_f32())
         }
     }
 
     impl From<Degrees> for Rotation2D {
         fn from(degrees: Degrees) -> Self {
-            Self {
-                degrees,
-                radians: degrees.into(),
-            }
+            Self::from_f32_degrees(degrees.to_f32())
         }
     }
 
     impl From<&Degrees> for Rotation2D {
         fn from(degrees: &Degrees) -> Self {
-            Self::from(*degrees)
+            Self::from_f32_degrees(degrees.to_f32())
         }
     }
 
@@ -189,84 +159,80 @@ mod operators {
         impl Add<Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees + rhs))
+                Rotation2D::from(&(self.degrees() + rhs))
             }
         }
 
         impl Add<&Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees + rhs))
+                Rotation2D::from(&(self.degrees() + rhs))
             }
         }
 
         impl Add<Radians> for Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians + rhs))
+                Rotation2D::from(&(self.radians() + rhs))
             }
         }
 
         impl Add<&Radians> for Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians + rhs))
+                Rotation2D::from(&(self.radians() + rhs))
             }
         }
 
         impl Add<Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees + rhs))
+                Rotation2D::from(&(self.degrees() + rhs))
             }
         }
 
         impl Add<&Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees + rhs))
+                Rotation2D::from(&(self.degrees() + rhs))
             }
         }
 
         impl Add<Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians + rhs))
+                Rotation2D::from(&(self.radians() + rhs))
             }
         }
 
         impl Add<&Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn add(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians + rhs))
+                Rotation2D::from(&(self.radians() + rhs))
             }
         }
 
         impl AddAssign<Degrees> for Rotation2D {
             fn add_assign(&mut self, rhs: Degrees) {
-                self.degrees = self.degrees + rhs;
-                self.radians = self.degrees.into();
+                *self = *self + rhs;
             }
         }
 
         impl AddAssign<&Degrees> for Rotation2D {
             fn add_assign(&mut self, rhs: &Degrees) {
-                self.degrees = self.degrees + rhs;
-                self.radians = self.degrees.into();
+                *self = *self + rhs;
             }
         }
 
         impl AddAssign<Radians> for Rotation2D {
             fn add_assign(&mut self, rhs: Radians) {
-                self.radians = self.radians + rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self + rhs;
             }
         }
 
         impl AddAssign<&Radians> for Rotation2D {
             fn add_assign(&mut self, rhs: &Radians) {
-                self.radians = self.radians + rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self + rhs;
             }
         }
     }
@@ -277,84 +243,80 @@ mod operators {
         impl Sub<Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees - rhs))
+                Rotation2D::from(&(self.degrees() - rhs))
             }
         }
 
         impl Sub<&Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees - rhs))
+                Rotation2D::from(&(self.degrees() - rhs))
             }
         }
 
         impl Sub<Radians> for Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians - rhs))
+                Rotation2D::from(&(self.radians() - rhs))
             }
         }
 
         impl Sub<&Radians> for Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians - rhs))
+                Rotation2D::from(&(self.radians() - rhs))
             }
         }
 
         impl Sub<Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees - rhs))
+                Rotation2D::from(&(self.degrees() - rhs))
             }
         }
 
         impl Sub<&Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees - rhs))
+                Rotation2D::from(&(self.degrees() - rhs))
             }
         }
 
         impl Sub<Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians - rhs))
+                Rotation2D::from(&(self.radians() - rhs))
             }
         }
 
         impl Sub<&Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn sub(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians - rhs))
+                Rotation2D::from(&(self.radians() - rhs))
             }
         }
 
         impl SubAssign<Degrees> for Rotation2D {
             fn sub_assign(&mut self, rhs: Degrees) {
-                self.degrees = self.degrees - rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self - rhs;
             }
         }
 
         impl SubAssign<&Degrees> for Rotation2D {
             fn sub_assign(&mut self, rhs: &Degrees) {
-                self.degrees = self.degrees - rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self - rhs;
             }
         }
 
         impl SubAssign<Radians> for Rotation2D {
             fn sub_assign(&mut self, rhs: Radians) {
-                self.radians = self.radians - rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self - rhs;
             }
         }
 
         impl SubAssign<&Radians> for Rotation2D {
             fn sub_assign(&mut self, rhs: &Radians) {
-                self.radians = self.radians - rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self - rhs;
             }
         }
     }
@@ -365,84 +327,80 @@ mod operators {
         impl Mul<Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees * rhs))
+                Rotation2D::from(&(self.degrees() * rhs))
             }
         }
 
         impl Mul<&Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees * rhs))
+                Rotation2D::from(&(self.degrees() * rhs))
             }
         }
 
         impl Mul<Radians> for Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians * rhs))
+                Rotation2D::from(&(self.radians() * rhs))
             }
         }
 
         impl Mul<&Radians> for Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians * rhs))
+                Rotation2D::from(&(self.radians() * rhs))
             }
         }
 
         impl Mul<Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees * rhs))
+                Rotation2D::from(&(self.degrees() * rhs))
             }
         }
 
         impl Mul<&Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees * rhs))
+                Rotation2D::from(&(self.degrees() * rhs))
             }
         }
 
         impl Mul<Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians * rhs))
+                Rotation2D::from(&(self.radians() * rhs))
             }
         }
 
         impl Mul<&Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn mul(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians * rhs))
+                Rotation2D::from(&(self.radians() * rhs))
             }
         }
 
         impl MulAssign<Degrees> for Rotation2D {
             fn mul_assign(&mut self, rhs: Degrees) {
-                self.degrees = self.degrees * rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self * rhs;
             }
         }
 
         impl MulAssign<&Degrees> for Rotation2D {
             fn mul_assign(&mut self, rhs: &Degrees) {
-                self.degrees = self.degrees * rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self * rhs;
             }
         }
 
         impl MulAssign<Radians> for Rotation2D {
             fn mul_assign(&mut self, rhs: Radians) {
-                self.radians = self.radians * rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self * rhs;
             }
         }
 
         impl MulAssign<&Radians> for Rotation2D {
             fn mul_assign(&mut self, rhs: &Radians) {
-                self.radians = self.radians * rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self * rhs;
             }
         }
     }
@@ -453,84 +411,80 @@ mod operators {
         impl Div<Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees / rhs))
+                Rotation2D::from(&(self.degrees() / rhs))
             }
         }
 
         impl Div<&Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees / rhs))
+                Rotation2D::from(&(self.degrees() / rhs))
             }
         }
 
         impl Div<Radians> for Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians / rhs))
+                Rotation2D::from(&(self.radians() / rhs))
             }
         }
 
         impl Div<&Radians> for Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians / rhs))
+                Rotation2D::from(&(self.radians() / rhs))
             }
         }
 
         impl Div<Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees / rhs))
+                Rotation2D::from(&(self.degrees() / rhs))
             }
         }
 
         impl Div<&Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees / rhs))
+                Rotation2D::from(&(self.degrees() / rhs))
             }
         }
 
         impl Div<Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians / rhs))
+                Rotation2D::from(&(self.radians() / rhs))
             }
         }
 
         impl Div<&Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn div(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians / rhs))
+                Rotation2D::from(&(self.radians() / rhs))
             }
         }
 
         impl DivAssign<Degrees> for Rotation2D {
             fn div_assign(&mut self, rhs: Degrees) {
-                self.degrees = self.degrees / rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self / rhs;
             }
         }
 
         impl DivAssign<&Degrees> for Rotation2D {
             fn div_assign(&mut self, rhs: &Degrees) {
-                self.degrees = self.degrees / rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self / rhs;
             }
         }
 
         impl DivAssign<Radians> for Rotation2D {
             fn div_assign(&mut self, rhs: Radians) {
-                self.radians = self.radians / rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self / rhs;
             }
         }
 
         impl DivAssign<&Radians> for Rotation2D {
             fn div_assign(&mut self, rhs: &Radians) {
-                self.radians = self.radians / rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self / rhs;
             }
         }
     }
@@ -541,84 +495,80 @@ mod operators {
         impl Rem<Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees % rhs))
+                Rotation2D::from(&(self.degrees() % rhs))
             }
         }
 
         impl Rem<&Degrees> for Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees % rhs))
+                Rotation2D::from(&(self.degrees() % rhs))
             }
         }
 
         impl Rem<Radians> for Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians % rhs))
+                Rotation2D::from(&(self.radians() % rhs))
             }
         }
 
         impl Rem<&Radians> for Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians % rhs))
+                Rotation2D::from(&(self.radians() % rhs))
             }
         }
 
         impl Rem<Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees % rhs))
+                Rotation2D::from(&(self.degrees() % rhs))
             }
         }
 
         impl Rem<&Degrees> for &Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: &Degrees) -> Self::Output {
-                Rotation2D::from(&(self.degrees % rhs))
+                Rotation2D::from(&(self.degrees() % rhs))
             }
         }
 
         impl Rem<Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians % rhs))
+                Rotation2D::from(&(self.radians() % rhs))
             }
         }
 
         impl Rem<&Radians> for &Rotation2D {
             type Output = Rotation2D;
             fn rem(self, rhs: &Radians) -> Self::Output {
-                Rotation2D::from(&(self.radians % rhs))
+                Rotation2D::from(&(self.radians() % rhs))
             }
         }
 
         impl RemAssign<Degrees> for Rotation2D {
             fn rem_assign(&mut self, rhs: Degrees) {
-                self.degrees = self.degrees % rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self % rhs;
             }
         }
 
         impl RemAssign<&Degrees> for Rotation2D {
             fn rem_assign(&mut self, rhs: &Degrees) {
-                self.degrees = self.degrees % rhs;
-                self.radians = Radians::from(&self.degrees);
+                *self = *self % rhs;
             }
         }
 
         impl RemAssign<Radians> for Rotation2D {
             fn rem_assign(&mut self, rhs: Radians) {
-                self.radians = self.radians % rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self % rhs;
             }
         }
 
         impl RemAssign<&Radians> for Rotation2D {
             fn rem_assign(&mut self, rhs: &Radians) {
-                self.radians = self.radians % rhs;
-                self.degrees = Degrees::from(&self.radians);
+                *self = *self % rhs;
             }
         }
     }
@@ -629,14 +579,14 @@ mod operators {
         impl Neg for Rotation2D {
             type Output = Rotation2D;
             fn neg(self) -> Self::Output {
-                Rotation2D::from(&(-self.radians))
+                Rotation2D::from(&(-self.radians()))
             }
         }
 
         impl Neg for &Rotation2D {
             type Output = Rotation2D;
             fn neg(self) -> Self::Output {
-                Rotation2D::from(&(-self.radians))
+                Rotation2D::from(&(-self.radians()))
             }
         }
     }
