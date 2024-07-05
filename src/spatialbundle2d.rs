@@ -18,7 +18,7 @@ pub struct SpatialBundle2D {
     pub rotation: Rotation2D,
     pub scale: Scale2D,
     pub draw_order: DrawOrder,
-    pub spatial: SpatialBundle,
+    pub transform_bundle: TransformBundle,
     pub r_prop: RotationPropagation,
     pub p_prop: PositionPropagation,
     pub s_prop: ScalePropagation,

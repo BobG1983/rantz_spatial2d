@@ -1,8 +1,6 @@
-#[derive(Default, Clone, Copy, PartialEq, Eq, Debug, Hash)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Component, bevy::prelude::Reflect)
-)]
+use bevy::prelude::{Component, Reflect};
+
+#[derive(Default, Clone, Copy, PartialEq, Eq, Debug, Hash, Component, Reflect)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum CompassHalfwinds {
     #[default]
@@ -130,22 +128,17 @@ mod from {
     }
 }
 
-#[cfg(feature = "bevy")]
 mod into {
-    use crate::math::Radians;
-
     use super::CompassHalfwinds;
-    #[cfg(feature = "bevy")]
+    use crate::math::Radians;
     use bevy::math::Vec2;
 
-    #[cfg(feature = "bevy")]
     impl From<CompassHalfwinds> for Vec2 {
         fn from(compass: CompassHalfwinds) -> Self {
             Vec2::from(Radians::from(compass))
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&CompassHalfwinds> for Vec2 {
         fn from(compass: &CompassHalfwinds) -> Self {
             (*compass).into()

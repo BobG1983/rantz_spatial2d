@@ -1,22 +1,13 @@
-#[cfg(feature = "bevy")]
-use bevy::prelude::Vec2;
+use bevy::prelude::*;
 
-#[derive(Clone, Copy, PartialEq, Debug)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Component, bevy::prelude::Reflect)
-)]
+#[derive(Clone, Copy, PartialEq, Debug, Component, Reflect)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Scale2D {
     pub x: f32,
     pub y: f32,
 }
 
-#[derive(Default, Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Component, bevy::prelude::Reflect)
-)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, Debug, Component, Reflect)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum ScalePropagation {
     #[default]
@@ -34,7 +25,6 @@ impl Scale2D {
         Self { x, y }
     }
 
-    #[cfg(feature = "bevy")]
     pub fn from_vec(vec: Vec2) -> Self {
         assert!(vec.x != 0.0 && vec.y != 0.0);
         Self { x: vec.x, y: vec.y }
@@ -86,31 +76,27 @@ mod default {
 
 mod conversions {
     use super::Scale2D;
-    #[cfg(feature = "bevy")]
+
     use bevy::math::Vec2;
 
-    #[cfg(feature = "bevy")]
     impl From<Vec2> for Scale2D {
         fn from(value: Vec2) -> Self {
             Self::from_vec(value)
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Vec2> for Scale2D {
         fn from(value: &Vec2) -> Self {
             Self::from_vec(*value)
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<Scale2D> for Vec2 {
         fn from(value: Scale2D) -> Self {
             Vec2::new(value.x, value.y)
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Scale2D> for Vec2 {
         fn from(value: &Scale2D) -> Self {
             Vec2::new(value.x, value.y)
@@ -132,7 +118,7 @@ mod conversions {
 
 mod operators {
     mod add {
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
 
         use crate::prelude::Scale2D;
@@ -180,7 +166,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<Vec2> for Scale2D {
             type Output = Scale2D;
             fn add(self, rhs: Vec2) -> Self::Output {
@@ -188,7 +173,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<Vec2> for &Scale2D {
             type Output = Scale2D;
             fn add(self, rhs: Vec2) -> Self::Output {
@@ -196,7 +180,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<&Vec2> for Scale2D {
             type Output = Scale2D;
             fn add(self, rhs: &Vec2) -> Self::Output {
@@ -204,7 +187,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<&Vec2> for &Scale2D {
             type Output = Scale2D;
             fn add(self, rhs: &Vec2) -> Self::Output {
@@ -230,14 +212,12 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl AddAssign<Vec2> for Scale2D {
             fn add_assign(&mut self, rhs: Vec2) {
                 *self = *self + rhs
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl AddAssign<&Vec2> for Scale2D {
             fn add_assign(&mut self, rhs: &Vec2) {
                 *self = *self + rhs
@@ -246,7 +226,7 @@ mod operators {
     }
     mod sub {
         use crate::prelude::Scale2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Sub, SubAssign};
 
@@ -292,7 +272,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<Vec2> for Scale2D {
             type Output = Scale2D;
             fn sub(self, rhs: Vec2) -> Self::Output {
@@ -300,7 +279,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<Vec2> for &Scale2D {
             type Output = Scale2D;
             fn sub(self, rhs: Vec2) -> Self::Output {
@@ -308,7 +286,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<&Vec2> for Scale2D {
             type Output = Scale2D;
             fn sub(self, rhs: &Vec2) -> Self::Output {
@@ -316,7 +293,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<&Vec2> for &Scale2D {
             type Output = Scale2D;
             fn sub(self, rhs: &Vec2) -> Self::Output {
@@ -342,14 +318,12 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl SubAssign<Vec2> for Scale2D {
             fn sub_assign(&mut self, rhs: Vec2) {
                 *self = *self - rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl SubAssign<&Vec2> for Scale2D {
             fn sub_assign(&mut self, rhs: &Vec2) {
                 *self = *self - rhs;
@@ -358,7 +332,7 @@ mod operators {
     }
     mod mul {
         use crate::prelude::Scale2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Mul, MulAssign};
 
@@ -404,7 +378,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<Vec2> for Scale2D {
             type Output = Scale2D;
             fn mul(self, rhs: Vec2) -> Self::Output {
@@ -412,7 +385,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<Vec2> for &Scale2D {
             type Output = Scale2D;
             fn mul(self, rhs: Vec2) -> Self::Output {
@@ -420,7 +392,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<&Vec2> for Scale2D {
             type Output = Scale2D;
             fn mul(self, rhs: &Vec2) -> Self::Output {
@@ -428,7 +399,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<&Vec2> for &Scale2D {
             type Output = Scale2D;
             fn mul(self, rhs: &Vec2) -> Self::Output {
@@ -454,14 +424,12 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl MulAssign<Vec2> for Scale2D {
             fn mul_assign(&mut self, rhs: Vec2) {
                 *self = *self * rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl MulAssign<&Vec2> for Scale2D {
             fn mul_assign(&mut self, rhs: &Vec2) {
                 *self = *self * rhs;
@@ -470,7 +438,7 @@ mod operators {
     }
     mod div {
         use crate::prelude::Scale2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Div, DivAssign};
 
@@ -516,7 +484,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<Vec2> for Scale2D {
             type Output = Scale2D;
             fn div(self, rhs: Vec2) -> Self::Output {
@@ -524,7 +491,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<Vec2> for &Scale2D {
             type Output = Scale2D;
             fn div(self, rhs: Vec2) -> Self::Output {
@@ -532,7 +498,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<&Vec2> for Scale2D {
             type Output = Scale2D;
             fn div(self, rhs: &Vec2) -> Self::Output {
@@ -540,7 +505,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<&Vec2> for &Scale2D {
             type Output = Scale2D;
             fn div(self, rhs: &Vec2) -> Self::Output {
@@ -566,14 +530,12 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl DivAssign<Vec2> for Scale2D {
             fn div_assign(&mut self, rhs: Vec2) {
                 *self = *self / rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl DivAssign<&Vec2> for Scale2D {
             fn div_assign(&mut self, rhs: &Vec2) {
                 *self = *self / rhs;
@@ -582,7 +544,7 @@ mod operators {
     }
     mod rem {
         use crate::prelude::Scale2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Rem, RemAssign};
 
@@ -628,7 +590,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<Vec2> for Scale2D {
             type Output = Scale2D;
             fn rem(self, rhs: Vec2) -> Self::Output {
@@ -636,7 +597,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<Vec2> for &Scale2D {
             type Output = Scale2D;
             fn rem(self, rhs: Vec2) -> Self::Output {
@@ -644,7 +604,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<&Vec2> for Scale2D {
             type Output = Scale2D;
             fn rem(self, rhs: &Vec2) -> Self::Output {
@@ -652,7 +611,6 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<&Vec2> for &Scale2D {
             type Output = Scale2D;
             fn rem(self, rhs: &Vec2) -> Self::Output {
@@ -678,14 +636,12 @@ mod operators {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl RemAssign<Vec2> for Scale2D {
             fn rem_assign(&mut self, rhs: Vec2) {
                 *self = *self % rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl RemAssign<&Vec2> for Scale2D {
             fn rem_assign(&mut self, rhs: &Vec2) {
                 *self = *self % rhs;

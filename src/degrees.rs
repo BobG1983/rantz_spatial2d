@@ -1,10 +1,7 @@
 pub use crate::prelude::*;
+use bevy::prelude::*;
 
-#[derive(Default, Clone, Copy, PartialEq, Debug)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Reflect, bevy::prelude::Deref, bevy::prelude::DerefMut)
-)]
+#[derive(Default, Clone, Copy, PartialEq, Debug, Reflect, Deref, DerefMut)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Degrees(f32);
 
@@ -141,19 +138,17 @@ mod from {
 
 mod into {
     use super::Degrees;
-    #[cfg(feature = "bevy")]
+
     use super::Radians;
-    #[cfg(feature = "bevy")]
+
     use bevy::math::{Quat, Vec2};
 
-    #[cfg(feature = "bevy")]
     impl From<Degrees> for Quat {
         fn from(value: Degrees) -> Self {
             Quat::from_rotation_z(value.to_radians())
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Degrees> for Quat {
         fn from(value: &Degrees) -> Self {
             Quat::from_rotation_z(value.to_radians())
@@ -172,14 +167,12 @@ mod into {
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<Degrees> for Vec2 {
         fn from(value: Degrees) -> Self {
             Vec2::from_angle(Radians::from(value).into())
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Degrees> for Vec2 {
         fn from(value: &Degrees) -> Self {
             Vec2::from_angle(Radians::from(value).into())

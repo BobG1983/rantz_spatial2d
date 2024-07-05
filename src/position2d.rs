@@ -1,21 +1,14 @@
 use crate::prelude::{Degrees, Radians};
+use bevy::prelude::*;
 
-#[derive(Default, Clone, Copy, PartialEq, Debug)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Component, bevy::prelude::Reflect)
-)]
+#[derive(Default, Clone, Copy, PartialEq, Debug, Component, Reflect)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Position2D {
     pub x: f32,
     pub y: f32,
 }
 
-#[derive(Default, Clone, Copy, PartialEq, Eq, Debug)]
-#[cfg_attr(
-    feature = "bevy",
-    derive(bevy::prelude::Component, bevy::prelude::Reflect)
-)]
+#[derive(Default, Clone, Copy, PartialEq, Eq, Debug, Component, Reflect)]
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub enum PositionPropagation {
     #[default]
@@ -70,20 +63,16 @@ impl Position2D {
     }
 }
 
-#[cfg(feature = "bevy")]
 mod from {
     use super::Position2D;
-    #[cfg(feature = "bevy")]
     use bevy::math::Vec2;
 
-    #[cfg(feature = "bevy")]
     impl From<Vec2> for Position2D {
         fn from(value: Vec2) -> Self {
             Self::from_f32(value.x, value.y)
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Vec2> for Position2D {
         fn from(value: &Vec2) -> Self {
             Self::from_f32(value.x, value.y)
@@ -91,20 +80,16 @@ mod from {
     }
 }
 
-#[cfg(feature = "bevy")]
 mod into {
     use super::Position2D;
-    #[cfg(feature = "bevy")]
     use bevy::math::Vec2;
 
-    #[cfg(feature = "bevy")]
     impl From<Position2D> for Vec2 {
         fn from(value: Position2D) -> Self {
             Self::new(value.x, value.y)
         }
     }
 
-    #[cfg(feature = "bevy")]
     impl From<&Position2D> for Vec2 {
         fn from(value: &Position2D) -> Self {
             Self::new(value.x, value.y)
@@ -115,7 +100,6 @@ mod into {
 mod operations {
     mod add {
         use crate::prelude::Position2D;
-        #[cfg(feature = "bevy")]
         use bevy::math::Vec2;
         use std::ops::{Add, AddAssign};
 
@@ -161,7 +145,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<Vec2> for Position2D {
             type Output = Position2D;
             fn add(self, rhs: Vec2) -> Self::Output {
@@ -169,7 +152,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<&Vec2> for Position2D {
             type Output = Position2D;
             fn add(self, rhs: &Vec2) -> Self::Output {
@@ -177,7 +159,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<Vec2> for &Position2D {
             type Output = Position2D;
             fn add(self, rhs: Vec2) -> Self::Output {
@@ -185,7 +166,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Add<&Vec2> for &Position2D {
             type Output = Position2D;
             fn add(self, rhs: &Vec2) -> Self::Output {
@@ -193,14 +173,12 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl AddAssign<Vec2> for Position2D {
             fn add_assign(&mut self, rhs: Vec2) {
                 *self = *self + rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl AddAssign<&Vec2> for Position2D {
             fn add_assign(&mut self, rhs: &Vec2) {
                 *self = *self + rhs;
@@ -227,7 +205,6 @@ mod operations {
     }
     mod sub {
         use crate::prelude::Position2D;
-        #[cfg(feature = "bevy")]
         use bevy::math::Vec2;
         use std::ops::{Sub, SubAssign};
 
@@ -273,7 +250,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<Vec2> for Position2D {
             type Output = Position2D;
             fn sub(self, rhs: Vec2) -> Self::Output {
@@ -281,7 +257,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<&Vec2> for Position2D {
             type Output = Position2D;
             fn sub(self, rhs: &Vec2) -> Self::Output {
@@ -289,16 +264,13 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<Vec2> for &Position2D {
-            #[cfg(feature = "bevy")]
             type Output = Position2D;
             fn sub(self, rhs: Vec2) -> Self::Output {
                 Position2D::from_f32(self.x - rhs.x, self.y - rhs.y)
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Sub<&Vec2> for &Position2D {
             type Output = Position2D;
             fn sub(self, rhs: &Vec2) -> Self::Output {
@@ -306,14 +278,12 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl SubAssign<Vec2> for Position2D {
             fn sub_assign(&mut self, rhs: Vec2) {
                 *self = *self - rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl SubAssign<&Vec2> for Position2D {
             fn sub_assign(&mut self, rhs: &Vec2) {
                 *self = *self - rhs;
@@ -340,7 +310,7 @@ mod operations {
     }
     mod mul {
         use crate::prelude::{Position2D, Scale2D};
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Mul, MulAssign};
 
@@ -386,7 +356,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<Vec2> for Position2D {
             type Output = Position2D;
             fn mul(self, rhs: Vec2) -> Self::Output {
@@ -394,7 +363,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<&Vec2> for Position2D {
             type Output = Position2D;
             fn mul(self, rhs: &Vec2) -> Self::Output {
@@ -402,7 +370,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<Vec2> for &Position2D {
             type Output = Position2D;
             fn mul(self, rhs: Vec2) -> Self::Output {
@@ -410,7 +377,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Mul<&Vec2> for &Position2D {
             type Output = Position2D;
             fn mul(self, rhs: &Vec2) -> Self::Output {
@@ -446,14 +412,12 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl MulAssign<Vec2> for Position2D {
             fn mul_assign(&mut self, rhs: Vec2) {
                 *self = *self * rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl MulAssign<&Vec2> for Position2D {
             fn mul_assign(&mut self, rhs: &Vec2) {
                 *self = *self * rhs;
@@ -492,7 +456,7 @@ mod operations {
     }
     mod div {
         use crate::prelude::Position2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Div, DivAssign};
 
@@ -538,7 +502,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<Vec2> for Position2D {
             type Output = Position2D;
             fn div(self, rhs: Vec2) -> Self::Output {
@@ -546,7 +509,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<&Vec2> for Position2D {
             type Output = Position2D;
             fn div(self, rhs: &Vec2) -> Self::Output {
@@ -554,7 +516,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<Vec2> for &Position2D {
             type Output = Position2D;
             fn div(self, rhs: Vec2) -> Self::Output {
@@ -562,7 +523,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Div<&Vec2> for &Position2D {
             type Output = Position2D;
             fn div(self, rhs: &Vec2) -> Self::Output {
@@ -570,14 +530,12 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl DivAssign<Vec2> for Position2D {
             fn div_assign(&mut self, rhs: Vec2) {
                 *self = *self / rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl DivAssign<&Vec2> for Position2D {
             fn div_assign(&mut self, rhs: &Vec2) {
                 *self = *self / rhs;
@@ -604,7 +562,7 @@ mod operations {
     }
     mod rem {
         use crate::prelude::Position2D;
-        #[cfg(feature = "bevy")]
+
         use bevy::math::Vec2;
         use std::ops::{Rem, RemAssign};
 
@@ -650,7 +608,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<Vec2> for Position2D {
             type Output = Position2D;
             fn rem(self, rhs: Vec2) -> Self::Output {
@@ -658,7 +615,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<&Vec2> for Position2D {
             type Output = Position2D;
             fn rem(self, rhs: &Vec2) -> Self::Output {
@@ -666,7 +622,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<Vec2> for &Position2D {
             type Output = Position2D;
             fn rem(self, rhs: Vec2) -> Self::Output {
@@ -674,7 +629,6 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl Rem<&Vec2> for &Position2D {
             type Output = Position2D;
             fn rem(self, rhs: &Vec2) -> Self::Output {
@@ -682,14 +636,12 @@ mod operations {
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl RemAssign<Vec2> for Position2D {
             fn rem_assign(&mut self, rhs: Vec2) {
                 *self = *self % rhs;
             }
         }
 
-        #[cfg(feature = "bevy")]
         impl RemAssign<&Vec2> for Position2D {
             fn rem_assign(&mut self, rhs: &Vec2) {
                 *self = *self % rhs;
@@ -733,7 +685,7 @@ mod operations {
             }
         }
     }
-    #[cfg(feature = "bevy")]
+
     mod vec2 {
         use std::ops::{
             Add, AddAssign, Div, DivAssign, Mul, MulAssign, Rem, RemAssign, Sub, SubAssign,
